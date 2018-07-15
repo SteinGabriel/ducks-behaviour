@@ -6,6 +6,7 @@ const LocationsSchema = new Schema({
   country: String,
   city: String,
   address: String,
+  zipCode: String,
   parkName: String
 })
 
@@ -15,6 +16,7 @@ LocationsSchema.method.toJSON = function() {
     country: this.country,
     city: this.city,
     address: this.address,
+    zipCode: this.zipCode,
     parkName: this.parkName
   }
 }
