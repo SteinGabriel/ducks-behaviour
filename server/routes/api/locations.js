@@ -6,6 +6,7 @@ const Locations = mongoose.model('Locations')
 router.post('/', (req, res, next) => {
   const { body } = req
 
+  console.log(body)
   // Checks if there is no country
   // and sends a 422 status code
   // with a error message
@@ -52,7 +53,7 @@ router.post('/', (req, res, next) => {
 
   // Creates an instance of the Location
   // with data coming from front end
-  const finalLocation = new Location(body)
+  const finalLocation = new Locations(body)
   // Saves the new Locations into database
   return finalLocation
     .save()
