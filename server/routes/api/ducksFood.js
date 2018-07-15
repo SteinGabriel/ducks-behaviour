@@ -45,7 +45,7 @@ router.get('/', (req, res, next) => {
   return DucksFood.find()
     .sort({ createdAt: 'descending' })
     .then(ducksFoods =>
-      res.json({ ducksFoods: duckFoods.map(dfood => dfood.toJSON()) })
+      res.json({ ducksFoods: ducksFoods.map(dfood => dfood.toJSON()) })
     )
     .catch(next)
 })
@@ -61,7 +61,7 @@ router.param('id', (req, res, next, id) => {
   }).catch(next)
 })
 
-// Gets an ducksFood by its id
+// Gets an ducksFood record by its id
 router.get('/:id', (req, res, next) => {
   return res.json({
     ducksFood: req.ducksFood.toJSON() // does it finds automatically?

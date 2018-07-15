@@ -52,7 +52,7 @@ router.post('/', (req, res, next) => {
 
   // Creates an instance of the fedDucks
   // with data coming from front end
-  const finalFedDucks = new fedDucks(body)
+  const finalFedDucks = new FedDucks(body)
   // Saves the new fedDucks into database
   return finalFedDucks
     .save()
@@ -60,9 +60,8 @@ router.post('/', (req, res, next) => {
     .catch(next)
 })
 
-// Gets all fedDuckss
+// Gets all fedDuckss data
 // sorting by the last created
-// fedDuckss
 router.get('/', (req, res, next) => {
   return FedDucks.find()
     .sort({ createdAt: 'descending' })
