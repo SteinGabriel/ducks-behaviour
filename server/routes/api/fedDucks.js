@@ -66,7 +66,7 @@ router.get('/', (req, res, next) => {
   return FedDucks.find()
     .sort({ createdAt: 'descending' })
     .then(fedDucks =>
-      res.json({ fedDucks: fedDcuks.map(ducks => ducks.toJSON()) })
+      res.json({ fedDucks: fedDucks.map(ducks => ducks.toJSON()) })
     )
     .catch(next)
 })
