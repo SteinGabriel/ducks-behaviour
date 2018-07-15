@@ -2,61 +2,50 @@ const mongoose = require('mongoose')
 const router = require('express').Router()
 const DucksFood = mongoose.model('DucksFood')
 
-// Post method called when a new article os added
+// Post method called when a new ducksFood is added
 router.post('/', (req, res, next) => {
   const { body } = req
 
-  // Checks if there is no title
+  // Checks if there is no name
   // and sends a 422 status code
   // with a error message
-  if (!body.title) {
+  if (!body.name) {
     return res.status(422).json({
       erros: {
-        title: 'is required'
+        name: 'is required'
       }
     })
   }
 
-  // Checks if there is no author
+  // Checks if there is no type
   // and sends a 422 status code
   // with a error message
-  if (!body.author) {
+  if (!body.type) {
     return res.status(422).json({
       erros: {
-        author: 'is required'
+        type: 'is required'
       }
     })
   }
 
-  // Checks if there is no body
-  // and sends a 422 status code
-  // with a error message
-  if (!body.body) {
-    return res.status(422).json({
-      erros: {
-        body: 'is required'
-      }
-    })
-  }
-
-  // Creates an instance of the Article
+  // Creates an instance of the ducksFood
   // with data coming from front end
-  const finalArticle = new Articles(body)
-  // Saves the new article into database
-  return finalArticle
+  const finalDucksFood = new DucksFood(body)
+  // Saves the new ducksFood into database
+  return finalDucksFood
     .save()
-    .then(() => res.json({ article: finalArticle.toJSON() }))
+    .then(() => res.json({ ducksFood: finalDucksFood.toJSON() }))
     .catch(next)
 })
 
-// Gets all articles
+// Gets all ducksFoods
 // sorting by the last created
-// articles
+// ducksFoods
 router.get('/', (req, res, next) => {
   return DucksFood.find()
     .sort({ createdAt: 'descending' })
     .then(ducksFoods =>
-      res.json({ ducksFoods: duckFoods.map(food => food.toJSON()) })
+      res.json({ ducksFoods: duckFoods.map(dfood => dfood.toJSON()) })
     )
     .catch(next)
 })
@@ -72,17 +61,35 @@ router.param('id', (req, res, next, id) => {
   }).catch(next)
 })
 
-// Gets an article by its id
-router.get('/:id', (req, res, next) => {})
+// Gets an ducksFood by its id
+router.get('/:id', (req, res, next) => {
+  return res.json({
+    ducksFood: req.ducksFood.toJSON() // does it finds automatically?
+  })
+})
 
 // Not sure but I think this is the method called
-// when a user intends to update an article
-router.patch('/:id', (req, res, next) => {})
+// when a user intends to update an ducksFood
+router.patch('/:id', (req, res, next) => {
+  const { body } = req
 
-// Deletes an article by its id
+  if (typeof body.name !== 'undefined') {
+    req.ducksFood.name = body.name
+  }
+
+  if (typeof body.tpye !== 'undefined') {
+    req.ducksFood.tpye = body.tpye
+  }
+
+  return req.ducksFood
+    .save()
+    .then(() => res.json({ duckFood: req.duckFood.toJSON() }))
+    .catch(next)
+})
+
+// Deletes an ducksFood by its id
 router.delete('/:id', (req, res, next) => {
-  console.log('Deleting article ' + req.article._id)
-  return Articles.findByIdAndRemove(req.article._id)
+  return DucksFood.findByIdAndRemove(req.ducksFood._id)
     .then(() => res.sendStatus(200))
     .catch(next)
 })

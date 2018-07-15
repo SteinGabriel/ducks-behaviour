@@ -2,12 +2,12 @@ const mongoose = require('mongoose')
 
 const { Schema } = mongoose
 
-const DucksFoodsSchema = new Schema({
+const DucksFoodSchema = new Schema({
   name: String,
   type: String
 })
 
-DucksFoodsSchema.method.toJSON = function() {
+DucksFoodSchema.method.toJSON = function() {
   return {
     _id: this._id,
     name: this.name,
@@ -15,4 +15,4 @@ DucksFoodsSchema.method.toJSON = function() {
   }
 }
 
-mongoose.model('DucksFoods', DucksFoodsSchema)
+mongoose.model('DucksFood', DucksFoodSchema)
