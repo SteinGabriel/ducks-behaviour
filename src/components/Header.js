@@ -37,7 +37,7 @@ export default class Header extends Component {
           <Title>Ducks Feeding Behaviour Reasearch</Title>
           <Subheading>
             {`Hi! We are trying to understand more about ducks feeding behaviour
-            around the world and need your help.
+            around the world and we need your help.
             Please, fill all the fields above.`}
           </Subheading>
         </TitleContainer>

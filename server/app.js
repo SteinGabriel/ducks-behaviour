@@ -25,7 +25,7 @@ app.use(
 )
 
 mongoose.connect(
-  'mongodb://localhost/ducksbehaviour',
+  process.env.MONGODB_URI || `mongodb://localhost/ducksbehaviour`,
   function(err) {
     if (err) {
       console.log('Error: ' + err)
@@ -40,15 +40,16 @@ if (!isProduction) {
   app.use(morgan('dev'))
 } else {
   app.use(morgan('common'))
-  mongoose.set('debug', true)
   // Serve any static files
   app.use(express.static(path.join(__dirname, '../build')))
 }
 
+mongoose.set('debug', true)
 // Models
 require('./models/DucksFood')
 require('./models/FedDucks')
 require('./models/Locations')
+
 // Routes
 app.use(require('./routes'))
 
@@ -68,7 +69,6 @@ app.use((err, req, res) => {
     }
   })
 })
-
 app.set('port', process.env.PORT || 5000)
 
 const server = app.listen(app.get('port'), () =>
