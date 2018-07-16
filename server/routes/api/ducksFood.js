@@ -28,6 +28,17 @@ router.post('/', (req, res, next) => {
     })
   }
 
+  // Checks if there is no quantity
+  // and sends a 422 status code
+  // with a error message
+  if (!body.quantity) {
+    return res.status(422).json({
+      erros: {
+        quantity: 'is required'
+      }
+    })
+  }
+
   // Creates an instance of the ducksFood
   // with data coming from front end
   const finalDucksFood = new DucksFood(body)

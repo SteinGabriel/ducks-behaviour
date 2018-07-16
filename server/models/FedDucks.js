@@ -4,8 +4,8 @@ const { Schema } = mongoose
 
 const FedDucksSchema = new Schema(
   {
-    food_id: Number,
-    location_id: Number,
+    food_id: String,
+    location_id: String,
     ducksQty: Number,
     foodQty: Number
   },

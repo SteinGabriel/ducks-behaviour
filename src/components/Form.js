@@ -8,6 +8,25 @@ import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import axios from 'axios'
 
+const ErrorMessage = styled.div`
+  width: 500px;
+  height: auto;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+  background: #feaab9;
+  color: #a01115;
+`
+const SuccessMessage = styled.div`
+  width: 500px;
+  height: auto;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+  background: #d2ffe2;
+  color: #1d8d39;
+`
+
 class Form extends Component {
   constructor(props) {
     super(props)
@@ -15,24 +34,21 @@ class Form extends Component {
     this.state = {
       food: '',
       foodType: '',
-      quantity: '',
+      foodQuantity: '',
+      ducksQuantity: '',
       country: '',
       city: '',
       address: '',
       parkName: '',
-      errors: []
+      zipCode: '',
+      errors: [],
+      submitStatusCode: 0
     }
   }
 
   handleSubmit() {
     if (this.validateForm()) {
-      const data = {
-        ...this.state
-      }
-
-      data.dateTime = this.props.dateTime
-
-      console.log(data)
+      this.submitForm()
     }
   }
 
@@ -42,52 +58,146 @@ class Form extends Component {
     const {
       food,
       foodType,
-      quantity,
+      foodQuantity,
+      ducksQuantity,
       country,
       city,
       address,
+      zipCode,
       parkName
     } = this.state
 
     if (dateTime === '' || dateTime === 'undefined') {
-      errors.push('Date')
+      errors.push('Date is required!')
     }
 
     if (food === '' || food === 'undefined') {
-      errors.push('Food')
+      errors.push('Food is required')
     }
 
     if (foodType === '' || foodType === 'undefined') {
-      errors.push('Food Type')
+      errors.push('Food Type is required')
     }
 
-    if (quantity === '' || quantity === 'undefined') {
-      errors.push('Quantity')
+    if (foodQuantity === '' || foodQuantity === 'undefined') {
+      errors.push('Food Quantity is required')
+    }
+
+    if (ducksQuantity === '' || ducksQuantity === 'undefined') {
+      errors.push('Ducks Quantity is required')
     }
 
     if (country === '' || country === 'undefined') {
-      errors.push('Country')
+      errors.push('Country is required')
     }
 
     if (city === '' || city === 'undefined') {
-      errors.push('City')
+      errors.push('City is required')
     }
 
     if (address === '' || address === 'undefined') {
-      errors.push('Address')
+      errors.push('Address is required')
+    }
+
+    if (zipCode === '' || zipCode === 'undefined') {
+      errors.push('Zip Code is required')
     }
 
     if (parkName === '' || parkName === 'undefined') {
-      errors.push('Park Name')
+      errors.push('Park Name is required')
     }
+
     this.setState({ errors })
     // If there is no error returns true
-
-    console.log(errors)
     return errors.length === 0
   }
 
-  submitForm(data) {}
+  async submitForm() {
+    const data = {
+      ...this.state
+    }
+
+    const duckFoodData = {
+      name: data.food,
+      type: data.foodType,
+      quantity: data.foodQuantity
+    }
+
+    const locationData = {
+      country: data.country,
+      city: data.city,
+      address: data.address,
+      zipCode: data.zipCode,
+      parkName: data.parkName
+    }
+
+    try {
+      const ducksFoodId = await this.saveFood(duckFoodData)
+      const locationId = await this.saveLocation(locationData)
+      const fedDucksData = {
+        food_id: ducksFoodId,
+        location_id: locationId,
+        ducksQty: data.ducksQuantity,
+        foodQty: data.foodQuantity
+      }
+
+      await this.saveFedDucks(fedDucksData)
+      this.setState({ submitStatusCode: 200 })
+    } catch (error) {
+      this.setState({ submitStatusCode: 500 })
+    }
+  }
+
+  saveFood(data) {
+    if (data) {
+      const body = {
+        ...data
+      }
+
+      return new Promise((resolve, reject) => {
+        axios
+          .post('http://localhost:5000/api/ducksfood', body)
+          .then(response => {
+            console.log(response)
+            resolve(response.data.ducksFood._id)
+          })
+          .catch(err => reject(err))
+      })
+    }
+  }
+
+  saveLocation(data) {
+    if (data) {
+      const body = {
+        ...data
+      }
+
+      return new Promise((resolve, reject) => {
+        axios
+          .post('http://localhost:5000/api/locations', body)
+          .then(response => resolve(response.data.location._id))
+          .catch(err => reject(err))
+      })
+    }
+  }
+
+  saveFedDucks(data) {
+    if (data) {
+      const body = {
+        ...data
+      }
+
+      return new Promise((resolve, reject) => {
+        axios
+          .post('http://localhost:5000/api/fedducks', body)
+          .then(response => {
+            console.log(response)
+            resolve(response.data)
+          })
+          .catch(err => reject(err))
+      })
+    }
+  }
 
   handleOnChange(prop, value = '') {
     if (prop) {
@@ -108,13 +218,13 @@ class Form extends Component {
               required
               id="quantity"
               label="Ducks Quantity"
-              onChange={e => this.handleOnChange('quantity', e.target.value)}
+              onChange={e =>
+                this.handleOnChange('ducksQuantity', e.target.value)
+              }
               type="number"
               margin="normal"
             />
           </Grid>
-        </Grid>
-        <Grid container spacing={8} alignItems="flex-end">
           <Grid item>
             <LocalDining />
           </Grid>
@@ -132,8 +242,19 @@ class Form extends Component {
               required
               id="foodType"
               label="Type"
-              autoComplete="current-password"
               onChange={e => this.handleOnChange('foodType', e.target.value)}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              required
+              id="foodQuantity"
+              label="Quantity"
+              type="number"
+              onChange={e =>
+                this.handleOnChange('foodQuantity', e.target.value)
+              }
               margin="normal"
             />
           </Grid>
@@ -172,6 +293,15 @@ class Form extends Component {
           <Grid item>
             <TextField
               required
+              id="address"
+              label="Zip Code"
+              onChange={e => this.handleOnChange('zipCode', e.target.value)}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              required
               id="parkName"
               label="Park Name"
               onChange={e => this.handleOnChange('parkName', e.target.value)}
@@ -179,14 +309,26 @@ class Form extends Component {
             />
           </Grid>
         </Grid>
-
         <Button
           variant="contained"
           color="primary"
           onClick={() => this.handleSubmit()}
+          style={{ margin: '20px', width: '150px' }}
         >
-          Save
+          Submit
         </Button>
+        {this.state.errors.map(err => {
+          return <ErrorMessage>{err}</ErrorMessage>
+        })}
+        {this.state.submitStatusCode === 500 && (
+          <ErrorMessage>
+            Something went wrong. Please, check your internet connection and try
+            again.
+          </ErrorMessage>
+        )}
+        {this.state.submitStatusCode === 200 && (
+          <SuccessMessage>Form submitted. Thank you!</SuccessMessage>
+        )}
       </div>
     )
   }

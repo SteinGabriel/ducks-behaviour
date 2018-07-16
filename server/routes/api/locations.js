@@ -51,13 +51,24 @@ router.post('/', (req, res, next) => {
     })
   }
 
+  // Checks if there is no park name
+  // and sends a 422 status code
+  // with a error message
+  if (!body.parkName) {
+    return res.status(422).json({
+      erros: {
+        parkName: 'is required'
+      }
+    })
+  }
+
   // Creates an instance of the Location
   // with data coming from front end
   const finalLocation = new Locations(body)
   // Saves the new Locations into database
   return finalLocation
     .save()
-    .then(() => res.json({ locations: finalLocation.toJSON() }))
+    .then(() => res.json({ location: finalLocation.toJSON() }))
     .catch(next)
 })
 
