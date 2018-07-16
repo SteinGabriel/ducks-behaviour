@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import TextField from '@material-ui/core/TextField'
-import InputAdornment from '@material-ui/core/InputAdornment'
 import Timer from '@material-ui/icons/Timer'
+import Grid from '@material-ui/core/Grid'
 import { connect } from 'react-redux'
+
+const getCurrentDate = () => {
+  return formatDate(new Date())
+}
 
 // Returns formatted Date 'YYY-MM-DD HH:MM AM/PM'
 const formatDate = date => {
@@ -14,7 +17,6 @@ const formatDate = date => {
     let day = date.getDate()
     const hours = date.getHours()
     const minutes = date.getMinutes()
-    const seconds = date.getSeconds()
 
     if (Number(day) < 10) day = '0' + day
     if (Number(month) < 10) month = '0' + month
@@ -23,10 +25,6 @@ const formatDate = date => {
   }
 
   return formattedDate
-}
-
-const getCurrentDate = () => {
-  return formatDate(new Date())
 }
 
 class DateAndTimePickers extends Component {
@@ -40,19 +38,24 @@ class DateAndTimePickers extends Component {
   }
 
   render() {
-    console.log('state datetime ' + this.props.dateTime)
-    const { onDateTimeSelected } = this.props
     return (
-      <div>
-        <Timer />
-        <TextField
-          id="datetime"
-          label="Time the ducks were fed"
-          type="datetime-local"
-          defaultValue={getCurrentDate()}
-          onChange={this.handleChangeDate.bind(this)}
-        />
-      </div>
+      <Grid container spacing={8} alignItems="flex-end">
+        <Grid item>
+          <Timer />
+        </Grid>
+        <Grid item>
+          <TextField
+            id="datetime"
+            label="Time the ducks were fed"
+            type="datetime-local"
+            defaultValue={getCurrentDate()}
+            onChange={this.handleChangeDate.bind(this)}
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+        </Grid>
+      </Grid>
     )
   }
 }
@@ -62,10 +65,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  onDateTimeSelected: data => {
-    console.log('Date received -> ' + data)
-    dispatch({ type: 'DATE_SELECTED', data })
-  }
+  onDateTimeSelected: data => dispatch({ type: 'DATE_SELECTED', data })
 })
 
 export default connect(

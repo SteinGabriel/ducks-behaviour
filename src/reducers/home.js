@@ -11,7 +11,7 @@ export default (
     case 'DATE_SELECTED':
       return {
         ...state,
-        dateTime: action.data.dateTime
+        dateTime: action.data
       }
     case 'SUBMIT_DATA':
       return {

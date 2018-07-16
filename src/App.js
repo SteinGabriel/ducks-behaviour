@@ -18,9 +18,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <FormControl>
-          <Form />
-        </FormControl>
+        <Form />
       </Provider>
     )
   }
