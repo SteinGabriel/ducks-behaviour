@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import TextField from '@material-ui/core/TextField'
-import { withStyles } from '@material-ui/core/styles'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import Timer from '@material-ui/icons/Timer'
 import { connect } from 'react-redux'
 
 // Returns formatted Date 'YYY-MM-DD HH:MM AM/PM'
@@ -42,18 +43,16 @@ class DateAndTimePickers extends Component {
     console.log('state datetime ' + this.props.dateTime)
     const { onDateTimeSelected } = this.props
     return (
-      <form noValidate>
+      <div>
+        <Timer />
         <TextField
           id="datetime"
           label="Time the ducks were fed"
           type="datetime-local"
           defaultValue={getCurrentDate()}
           onChange={this.handleChangeDate.bind(this)}
-          InputLabelProps={{
-            shrink: true
-          }}
         />
-      </form>
+      </div>
     )
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import DateTimePicker from './components/DateTimePicker'
+import Form from './components/Form'
 import FormControl from '@material-ui/core/FormControl'
 import TextField from '@material-ui/core/TextField'
 import Input from '@material-ui/core/Input'
@@ -19,7 +19,7 @@ class App extends Component {
     return (
       <Provider store={store}>
         <FormControl>
-          <DateTimePicker />
+          <Form />
         </FormControl>
       </Provider>
     )
