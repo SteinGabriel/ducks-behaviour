@@ -49,6 +49,7 @@ class Form extends Component {
   handleSubmit() {
     if (this.validateForm()) {
       this.submitForm()
+      this.clearForm()
     }
   }
 
@@ -132,8 +133,8 @@ class Form extends Component {
     }
 
     try {
-      const ducksFoodId = await this.saveFood(duckFoodData)
-      const locationId = await this.saveLocation(locationData)
+      const ducksFoodId = await this.saveFoodData(duckFoodData)
+      const locationId = await this.saveLocationData(locationData)
       const fedDucksData = {
         food_id: ducksFoodId,
         location_id: locationId,
@@ -141,14 +142,14 @@ class Form extends Component {
         foodQty: data.foodQuantity
       }
 
-      await this.saveFedDucks(fedDucksData)
+      await this.saveFedDucksData(fedDucksData)
       this.setState({ submitStatusCode: 200 })
     } catch (error) {
       this.setState({ submitStatusCode: 500 })
     }
   }
 
-  saveFood(data) {
+  saveFoodData(data) {
     if (data) {
       const body = {
         ...data
@@ -166,7 +167,7 @@ class Form extends Component {
     }
   }
 
-  saveLocation(data) {
+  saveLocationData(data) {
     if (data) {
       const body = {
         ...data
@@ -181,7 +182,7 @@ class Form extends Component {
     }
   }
 
-  saveFedDucks(data) {
+  saveFedDucksData(data) {
     if (data) {
       const body = {
         ...data
@@ -197,6 +198,20 @@ class Form extends Component {
           .catch(err => reject(err))
       })
     }
+  }
+
+  clearForm() {
+    this.setState({
+      food: '',
+      foodType: '',
+      foodQuantity: '',
+      ducksQuantity: '',
+      country: '',
+      city: '',
+      address: '',
+      zipCode: '',
+      parkName: ''
+    })
   }
 
   handleOnChange(prop, value = '') {
@@ -218,6 +233,7 @@ class Form extends Component {
               required
               id="quantity"
               label="How many ducks?"
+              value={this.state.ducksQuantity}
               onChange={e =>
                 this.handleOnChange('ducksQuantity', e.target.value)
               }
@@ -233,6 +249,7 @@ class Form extends Component {
               required
               id="food"
               label="What food?"
+              value={this.state.food}
               onChange={e => this.handleOnChange('food', e.target.value)}
               margin="normal"
             />
@@ -242,6 +259,7 @@ class Form extends Component {
               required
               id="foodType"
               label="What type of food?"
+              value={this.state.foodType}
               onChange={e => this.handleOnChange('foodType', e.target.value)}
               margin="normal"
             />
@@ -251,6 +269,7 @@ class Form extends Component {
               required
               id="foodQuantity"
               label="How much food?"
+              value={this.state.foodQuantity}
               type="number"
               onChange={e =>
                 this.handleOnChange('foodQuantity', e.target.value)
@@ -268,6 +287,7 @@ class Form extends Component {
               required
               id="country"
               label="Country"
+              value={this.state.country}
               onChange={e => this.handleOnChange('country', e.target.value)}
               margin="normal"
             />
@@ -277,6 +297,7 @@ class Form extends Component {
               required
               id="city"
               label="City"
+              value={this.state.city}
               onChange={e => this.handleOnChange('city', e.target.value)}
               margin="normal"
             />
@@ -286,6 +307,7 @@ class Form extends Component {
               required
               id="address"
               label="Address"
+              value={this.state.address}
               onChange={e => this.handleOnChange('address', e.target.value)}
               margin="normal"
             />
@@ -295,6 +317,7 @@ class Form extends Component {
               required
               id="address"
               label="Zip Code"
+              value={this.state.zipCode}
               onChange={e => this.handleOnChange('zipCode', e.target.value)}
               margin="normal"
             />
@@ -304,6 +327,7 @@ class Form extends Component {
               required
               id="parkName"
               label="Park Name"
+              value={this.state.parkName}
               onChange={e => this.handleOnChange('parkName', e.target.value)}
               margin="normal"
             />

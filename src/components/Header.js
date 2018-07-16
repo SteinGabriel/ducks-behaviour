@@ -32,9 +32,9 @@ export default class Header extends Component {
     return (
       <Container>
         <TitleContainer>
-          <Title>Ducks Reasearch</Title>
+          <Title>Ducks Feeding Behaviour Reasearch</Title>
           <Subheading>
-            {`Hi! We are trying to understand more about ducks feed behaviour
+            {`Hi! We are trying to understand more about ducks feeding behaviour
             around the world and need your help.
             Please, fill all the fields above.`}
           </Subheading>
