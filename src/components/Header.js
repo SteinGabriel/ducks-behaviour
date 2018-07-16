@@ -3,14 +3,16 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   width: 100vw;
-  height: 9em;
+  min-height: 9em;
+  height: auto;
   background: #6a1b9a;
   border-bottom: #38006b 4px solid;
 `
 
 const TitleContainer = styled.div`
   width: 65vw;
-  height: 100%;
+  min-height: 9em;
+  height: auto;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -24,7 +26,7 @@ const Title = styled.h1`
 `
 
 const Subheading = styled.h4`
-  color: #fff;
+  color: #dddddd;
 `
 
 export default class Header extends Component {
