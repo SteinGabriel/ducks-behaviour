@@ -217,7 +217,7 @@ class Form extends Component {
             <TextField
               required
               id="quantity"
-              label="Ducks Quantity"
+              label="How many ducks?"
               onChange={e =>
                 this.handleOnChange('ducksQuantity', e.target.value)
               }
@@ -232,7 +232,7 @@ class Form extends Component {
             <TextField
               required
               id="food"
-              label="Food"
+              label="What food?"
               onChange={e => this.handleOnChange('food', e.target.value)}
               margin="normal"
             />
@@ -241,7 +241,7 @@ class Form extends Component {
             <TextField
               required
               id="foodType"
-              label="Type"
+              label="What type of food?"
               onChange={e => this.handleOnChange('foodType', e.target.value)}
               margin="normal"
             />
@@ -250,7 +250,7 @@ class Form extends Component {
             <TextField
               required
               id="foodQuantity"
-              label="Quantity"
+              label="How much food?"
               type="number"
               onChange={e =>
                 this.handleOnChange('foodQuantity', e.target.value)
@@ -313,7 +313,7 @@ class Form extends Component {
           variant="contained"
           color="primary"
           onClick={() => this.handleSubmit()}
-          style={{ margin: '20px', width: '150px' }}
+          style={{ margin: '20px', width: '150px', background: '#6a1b9a' }}
         >
           Submit
         </Button>
