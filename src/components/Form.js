@@ -1,15 +1,12 @@
 import React, { Component } from 'react'
 import DateTimePicker from './DateTimePicker'
-import Input from '@material-ui/core/Input'
-import InputLabel from '@material-ui/core/InputLabel'
-import FormControl from '@material-ui/core/FormControl'
 import TextField from '@material-ui/core/TextField'
 import styled from 'styled-components'
-import LocalDining from '@material-ui/icons/LocalDining'
-import Grain from '@material-ui/icons/Grain'
+import { Grain, LocalDining, LocationOn } from '@material-ui/icons'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
+import axios from 'axios'
 
 class Form extends Component {
   constructor(props) {
@@ -29,25 +26,11 @@ class Form extends Component {
 
   handleSubmit() {
     if (this.validateForm()) {
-      const {
-        food,
-        foodType,
-        quantity,
-        country,
-        city,
-        address,
-        parkName
-      } = this.state
-
       const data = {
-        food,
-        foodType,
-        quantity,
-        country,
-        city,
-        address,
-        parkName
+        ...this.state
       }
+
+      data.dateTime = this.props.dateTime
 
       console.log(data)
     }
@@ -55,7 +38,7 @@ class Form extends Component {
 
   validateForm() {
     const errors = []
-
+    const { dateTime } = this.props
     const {
       food,
       foodType,
@@ -65,6 +48,10 @@ class Form extends Component {
       address,
       parkName
     } = this.state
+
+    if (dateTime === '' || dateTime === 'undefined') {
+      errors.push('Date')
+    }
 
     if (food === '' || food === 'undefined') {
       errors.push('Food')
@@ -95,8 +82,12 @@ class Form extends Component {
     }
     this.setState({ errors })
     // If there is no error returns true
+
+    console.log(errors)
     return errors.length === 0
   }
+
+  submitForm(data) {}
 
   handleOnChange(prop, value = '') {
     if (prop) {
@@ -110,37 +101,15 @@ class Form extends Component {
         <DateTimePicker />
         <Grid container spacing={8} alignItems="flex-end">
           <Grid item>
-            <LocalDining />
+            <Grain />
           </Grid>
           <Grid item>
             <TextField
-              id="country"
-              label="Country"
-              onChange={e => this.handleOnChange('country', e.target.value)}
-              margin="normal"
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              id="city"
-              label="City"
-              onChange={e => this.handleOnChange('city', e.target.value)}
-              margin="normal"
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              id="address"
-              label="Address"
-              onChange={e => this.handleOnChange('address', e.target.value)}
-              margin="normal"
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              id="parkName"
-              label="Park Name"
-              onChange={e => this.handleOnChange('parkName', e.target.value)}
+              required
+              id="quantity"
+              label="Ducks Quantity"
+              onChange={e => this.handleOnChange('quantity', e.target.value)}
+              type="number"
               margin="normal"
             />
           </Grid>
@@ -151,6 +120,7 @@ class Form extends Component {
           </Grid>
           <Grid item>
             <TextField
+              required
               id="food"
               label="Food"
               onChange={e => this.handleOnChange('food', e.target.value)}
@@ -159,6 +129,7 @@ class Form extends Component {
           </Grid>
           <Grid item>
             <TextField
+              required
               id="foodType"
               label="Type"
               autoComplete="current-password"
@@ -169,18 +140,46 @@ class Form extends Component {
         </Grid>
         <Grid container spacing={8} alignItems="flex-end">
           <Grid item>
-            <Grain />
+            <LocationOn />
           </Grid>
           <Grid item>
             <TextField
-              id="quantity"
-              label="Ducks Quantity"
-              onChange={e => this.handleOnChange('quantity', e.target.value)}
-              type="number"
+              required
+              id="country"
+              label="Country"
+              onChange={e => this.handleOnChange('country', e.target.value)}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              required
+              id="city"
+              label="City"
+              onChange={e => this.handleOnChange('city', e.target.value)}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              required
+              id="address"
+              label="Address"
+              onChange={e => this.handleOnChange('address', e.target.value)}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              required
+              id="parkName"
+              label="Park Name"
+              onChange={e => this.handleOnChange('parkName', e.target.value)}
               margin="normal"
             />
           </Grid>
         </Grid>
+
         <Button
           variant="contained"
           color="primary"
@@ -197,11 +196,7 @@ const mapStateToProps = state => ({
   dateTime: state.home.dateTime
 })
 
-const mapDispatchToProps = dispatch => ({
-  onDateTimeSelected: data => dispatch({ type: 'FORM_SUBMIT', data })
-})
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(Form)

@@ -28,6 +28,16 @@ const formatDate = date => {
 }
 
 class DateAndTimePickers extends Component {
+  componentDidMount() {
+    // Put the initial value into redux state
+    // so if user submit without changing
+    // the date, the application has the default value
+    // inside the state
+    const { onDateTimeSelected } = this.props
+    const initialValue = getCurrentDate()
+    onDateTimeSelected(initialValue)
+  }
+
   handleChangeDate = e => {
     const date = e.target.value
     const { onDateTimeSelected } = this.props
