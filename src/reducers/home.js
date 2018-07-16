@@ -1,6 +1,6 @@
 export default (
   state = {
-    datePicker: '',
+    dateTime: '',
     foodName: '',
     foodQty: '',
     ducksQty: ''
@@ -11,7 +11,7 @@ export default (
     case 'DATE_SELECTED':
       return {
         ...state,
-        datePicker: action.data.datePicker
+        dateTime: action.data.dateTime
       }
     case 'SUBMIT_DATA':
       return {

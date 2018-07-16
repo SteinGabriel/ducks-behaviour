@@ -5,6 +5,8 @@ import TextField from '@material-ui/core/TextField'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import InputAdornment from '@material-ui/core/InputAdornment'
+import { Provider } from 'react-redux'
+import store from './store'
 
 class App extends Component {
   handleSave(data) {}
@@ -15,9 +17,11 @@ class App extends Component {
 
   render() {
     return (
-      <FormControl>
-        <DateTimePicker />
-      </FormControl>
+      <Provider store={store}>
+        <FormControl>
+          <DateTimePicker />
+        </FormControl>
+      </Provider>
     )
   }
 }
