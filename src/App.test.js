@@ -8,10 +8,3 @@ it('renders without crashing', () => {
   ReactDOM.unmountComponentAtNode(div)
 })
 
-it('saves location', () => {
-  const wrapper = shallow(<App />)
-  const data = {
-    time: ''
-  }
-  wrapper.instance().handleSave()
-})
