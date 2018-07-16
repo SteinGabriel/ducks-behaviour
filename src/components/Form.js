@@ -157,7 +157,7 @@ class Form extends Component {
 
       return new Promise((resolve, reject) => {
         axios
-          .post('http://localhost:5000/api/ducksfood', body)
+          .post('/api/ducksfood', body)
           .then(response => {
             console.log(response)
             resolve(response.data.ducksFood._id)
@@ -175,7 +175,7 @@ class Form extends Component {
 
       return new Promise((resolve, reject) => {
         axios
-          .post('http://localhost:5000/api/locations', body)
+          .post('/api/locations', body)
           .then(response => resolve(response.data.location._id))
           .catch(err => reject(err))
       })
@@ -190,7 +190,7 @@ class Form extends Component {
 
       return new Promise((resolve, reject) => {
         axios
-          .post('http://localhost:5000/api/fedducks', body)
+          .post('/api/fedducks', body)
           .then(response => {
             console.log(response)
             resolve(response.data)
